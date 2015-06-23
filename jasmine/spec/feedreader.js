@@ -105,52 +105,28 @@ $(function() {
     });
 
 
-    /* test that ensures when the loadFeed
-    * function is called and completes its work, there is at least
-    * a single .entry element within the .feed container.
-    */
-     describe('Initial Entries', function() {
-        //select first element in the menu
-        beforeEach(function(done) {
-            loadFeed(0, done);
-
-        });
-
-        it('should have .entry element in the .feed container', function(){
-            expect($('.feed .entry').length).toBeGreaterThan(0);
-        });
-
-    });
-
 
     /* test that ensures when a new feed is loaded
     * by the loadFeed function that the content actually changes.
     */
-    describe("New Feed Selection", function () {
-        var theOriginalTitle = $('.header-title').text();
-        var theNewTitle;
+    describe('New Feed Selection', function() {
+        var initialFeed;
 
-        //select 3rd value from the menu
-        beforeEach(function(done) {
-            loadFeed(2, done);
+        //load initial menu item
+        loadFeed(0);
 
-        });
+         beforeEach(function(done) {
+            //store intial context
+            initialFeed = $('.feed').html();
+            //move on to next menu item
+            loadFeed(1, done);
+         });
 
-
-        it('should load a new feed value', function(){
-            //grab the new title value
-            theNewTitle = $('.header-title').text();
-            //compare original title to the new title, they should be be the same
-            expect(theNewTitle).not.toBe(theOriginalTitle);
-        });
-
-
-        //return to the original menu item
-        afterEach(function(done){
+         it('should change content', function(done) {
+            expect($('.feed').html()).not.toEqual(initialFeed);
+            //return back to original
             loadFeed(0, done);
-        })
-
+         });
     });
-
 
 }());
